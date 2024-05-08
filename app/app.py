@@ -1,6 +1,7 @@
 from flask import Flask
 from healthcheck import HealthCheck
 from prometheus_client import generate_latest
+# from apscheduler.schedulers.background import BackgroundScheduler
 
 from utils.logging import get_logger, APP_RUNNING
 from utils.config import DEBUG, POD_NAME
@@ -14,8 +15,19 @@ def create_app():
     APP_RUNNING.labels(POD_NAME).set(1)
     return app
 
+# def create_scheduler():
+#     scheduler = BackgroundScheduler()
+#     scheduler.add_job(test_job, 'interval', seconds=30) # Every 30 seconds
+#     scheduler.add_job(test_job, 'cron', day_of_week='mon', hour=7) # Every Monday at 7 AM
+#     return scheduler
+
+
+# def test_job():
+#     logger.info('Hello from test job')
+
 
 logger = get_logger(__name__)
+# scheduler = create_scheduler()
 app = create_app()
 
 
@@ -29,4 +41,5 @@ app = create_app()
 
 
 if __name__ == "__main__":  # pragma: no cover
+    # scheduler.start()
     app.run(debug=DEBUG, host='0.0.0.0', port=8080)
