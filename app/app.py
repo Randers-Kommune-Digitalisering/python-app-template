@@ -19,5 +19,14 @@ logger = get_logger(__name__)
 app = create_app()
 
 
+# @app.route('/test-database', methods=['GET'])
+# def test_database():
+#     from database import test_database
+#     ok = test_database()
+#     if ok:
+#         return ok
+#     return 'failed', 500
+
+
 if __name__ == "__main__":  # pragma: no cover
     app.run(debug=DEBUG, host='0.0.0.0', port=8080)

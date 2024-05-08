@@ -9,8 +9,8 @@ RUN addgroup $APP_USER && \
     adduser $APP_USER -D -G $APP_USER -h $APP_HOME
 
 # Install packages
-#RUN apk update
-#RUN apk add postgresql-dev gcc python3-dev musl-dev # Packages needed for psycopg2
+# RUN apk update
+# RUN apk add postgresql-dev gcc python3-dev musl-dev # Packages needed for psycopg2
 
 # Copy files and set working dir
 COPY . $APP_HOME
