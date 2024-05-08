@@ -25,6 +25,7 @@ def create_app():
 def test_job():
     logger.info('Hello from test job')
 
+
 logger = get_logger(__name__)
 # scheduler = create_scheduler()
 app = create_app()
