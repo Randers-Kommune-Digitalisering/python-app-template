@@ -39,7 +39,7 @@ Nedenstående relaterer sig til et nyt Python app projekt der er baseret på den
 ### Database
 * Eksempel i [app/database.py](/app/database.py)
 * Nødvendige pakker [app/Dockerfile](/app/Dockerfile#L13)
-* Nødvendigt modul  [psycopg2](https://pypi.org/project/psycopg2/), [app/requirements.txt](/app/requirements.txt#L4)
+* Nødvendigt modul  [psycopg2](https://pypi.org/project/psycopg2/), [app/requirements.txt](/app/requirements.txt#L5)
 * Opsætning af database lokalt [docker-compose.yml](/docker-compose.yml#L22)
 * Nogle alternative moduler kunne være: [SQLAlchemy](https://www.sqlalchemy.org/), [MariaDB](https://pypi.org/project/mariadb/)
 
@@ -49,7 +49,7 @@ Nedenstående relaterer sig til et nyt Python app projekt der er baseret på den
 
 ### Kør kode på bestemt tidspunkt eller med interval
 * Eksempel i [app/app.py](/app/app.py#L18)
-* Nødvendigt modul [app/requirements.txt](/app/requirements.txt#L5)
+* Nødvendigt modul [app/requirements.txt](/app/requirements.txt#L6)
 
 # TODO
 * deploy
