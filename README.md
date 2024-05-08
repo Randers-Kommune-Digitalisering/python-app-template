@@ -39,8 +39,9 @@ Nedenstående relaterer sig til et nyt Python app projekt der er baseret på den
 ### Database
 * Eksempel i [app/database.py](/app/database.py)
 * Nødvendige pakker [app/Dockerfile](/app/Dockerfile#L13)
-* Nødvendigt modul [app/requirements.txt](/app/requirements.txt#L4)
+* Nødvendigt modul  [psycopg2](https://pypi.org/project/psycopg2/), [app/requirements.txt](/app/requirements.txt#L4)
 * Opsætning af database lokalt [docker-compose.yml](/docker-compose.yml#L22)
+* Nogle alternative moduler kunne være: [SQLAlchemy](https://www.sqlalchemy.org/), [MariaDB](https://pypi.org/project/mariadb/)
 
 ### Skriv til filer
 * Hvis der skal skrives til filer skal det være på et eksternt mount
