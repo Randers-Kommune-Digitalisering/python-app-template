@@ -9,16 +9,7 @@ from utils.config import DEBUG
 APP_RUNNING = Gauge('up', '1 - app is running, 0 - app is down', labelnames=['name'])
 
 
-# Logging
-def get_logger(name):
-    logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG) if DEBUG else logger.setLevel(logging.INFO)
-    logger.addHandler(get_handler())
-    return logger
-
-
-def get_handler():
-    handler = logging.StreamHandler(sys.stdout)
-    formatter = logging.Formatter('[%(levelname)s]%(name)s:%(asctime)s - %(message)s', "%d-%m-%Y %H:%M:%S")
-    handler.setFormatter(formatter)
-    return handler
+# Logging configuration
+def set_logging_configuration():
+    log_level = logging.DEBUG if DEBUG else logging.INFO
+    logging.basicConfig(stream=sys.stdout, level=log_level, format='[%(asctime)s] %(levelname)s - %(name)s - %(module)s:%(funcName)s - %(message)s', datefmt='%d-%m-%Y %H:%M:%S')

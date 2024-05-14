@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-DEBUG = os.getenv('DEBUG', False)
+DEBUG = os.getenv('DEBUG', 'False') in ['True', 'true']
+PORT = os.getenv('PORT', '8080')
 POD_NAME = os.getenv('POD_NAME', 'Pod name not set')
 # DB_USER = os.environ["DB_USER"]
 # DB_PASS = os.environ["DB_PASS"]
