@@ -1,10 +1,10 @@
 # import psycopg2
+# import logging
 
-# from utils.logging import get_logger
 # from utils.config import DB_HOST, DB_PORT, DB_DATABASE, DB_USER, DB_PASS
 
 
-# logger = get_logger(__name__)
+# logger = logging.getLogger(__name__)
 
 
 # def test_database():

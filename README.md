@@ -25,21 +25,22 @@ Nedenstående relaterer sig til et nyt Python app projekt der er baseret på den
 ## Quick start
 
 ### Almindelige commands
-* Start app'en:  ```python app/app.py```
+* Start app'en:  ```python src/main.py```
 * Start app'en i docker container: ```docker-compose up```
 * Unit tests: ```pytest```
-* Unit tests med coverage ```pytest --cov=app```
-* Lint: ```flake8 --ignore=E501 app tests --show-source```
+* Unit tests med coverage ```pytest --cov=src```
+* Lint: ```flake8 --ignore=E501 src tests --show-source```
 
 ### Logning
+* Logning til stdout, sat op i [logging.py](/src/utils/logging.py#L12), kaldes i [main](/src/main.py#L27)
 * Logning gøres med logger og ikke print() functionen
-* Logger kan hentes fra [app/utils/logging.py](/app/utils/logging.py)
-* Eksempel på prometheus gauge [her](/app/utils/logging.py#L9) og brugt [her](/app/app.py#L15)
+* Eksempel på brug af logger [her](/src/background_job.py), [her](/src/database.py) og [her](/src/main.py#L35)
+* Prometheus: eksempel på gauge [her](/src/utils/logging.py#L9) og brugt [her](/src/main.py#L17)
 
 ### Database
-* Eksempel i [app/database.py](/app/database.py)
-* Nødvendige pakker [app/Dockerfile](/app/Dockerfile#L13)
-* Nødvendigt modul  [psycopg2](https://pypi.org/project/psycopg2/), [app/requirements.txt](/app/requirements.txt#L5)
+* Eksempel i [src/database.py](/src/database.py)
+* Nødvendige pakker [src/Dockerfile](/src/Dockerfile#L13)
+* Nødvendigt modul  [psycopg2](https://pypi.org/project/psycopg2/), [app/requirements.txt](/src/requirements.txt#L5)
 * Opsætning af database lokalt [docker-compose.yml](/docker-compose.yml#L22)
 * Nogle alternative moduler kunne være: [SQLAlchemy](https://www.sqlalchemy.org/), [MariaDB](https://pypi.org/project/mariadb/)
 
@@ -48,8 +49,8 @@ Nedenstående relaterer sig til et nyt Python app projekt der er baseret på den
 * Eksempel til at test lokalt [docker-compose.yml](/docker-compose.yml#L18)
 
 ### Kør kode på bestemt tidspunkt eller med interval
-* Eksempel i [app/app.py](/app/app.py#L18)
-* Nødvendigt modul [app/requirements.txt](/app/requirements.txt#L6)
+* Eksempel i [src/main.py](/src/main.py#L18)
+* Nødvendigt modul [src/requirements.txt](/src/requirements.txt#L6)
 
 # TODO
 * deploy

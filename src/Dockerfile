@@ -3,6 +3,9 @@ FROM python:3.10-alpine
 # Set dir and user
 ENV APP_HOME=/app
 ENV APP_USER=non-root
+ENV PORT=8080
+
+RUN echo $PORT
 
 # Add user
 RUN addgroup $APP_USER && \
@@ -21,7 +24,7 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # Open port
-EXPOSE 8080
+EXPOSE $PORT
 
 # Set user
 USER $APP_USER
