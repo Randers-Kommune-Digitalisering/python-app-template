@@ -5,11 +5,10 @@ name: Build
 # Controls when the workflow will run
 on:
   workflow_run:
-    workflows: Unit test
-    branches:
-      - 'main'
-      - 'develop'
-    types: completed
+    workflows: ["Unit test"]
+    branches: [main, develop]
+    types: 
+      - completed
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -17,8 +16,6 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
-    # Depends on unit-test to be run successfully 
-    needs: unit-test
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
