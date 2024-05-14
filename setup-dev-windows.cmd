@@ -38,8 +38,8 @@ if %errorlevel% equ 0 (
 :install_deps
     python -m pip install -U pip
     
-    if exist "app\requirements.txt" (
-        python -m pip install -Ir app/requirements.txt
+    if exist "src\requirements.txt" (
+        python -m pip install -Ir src/requirements.txt
     )
 
     if exist "requirements-dev.txt" (

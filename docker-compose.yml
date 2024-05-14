@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   app:
-    build: app
+    build: src
     read_only: true
     networks:
       - app_network
@@ -17,7 +17,7 @@ services:
 
     # Add a volumne if there is a need to write files
     # volumes:
-    #     - ./<local dir>:<container dir full path> E.g. /app/myfiles
+    #     - ./<local dir>:<container dir full path> E.g. /mydir/myfiles
 
   #   depends_on: 
   #     db:
