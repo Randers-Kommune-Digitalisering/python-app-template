@@ -69,8 +69,8 @@ install_deps() {
 
     source "./$env_name/bin/activate"
 
-    if [ -f "app/requirements.txt" ]; then
-        pip install -Ir app/requirements.txt
+    if [ -f "src/requirements.txt" ]; then
+        pip install -Ir src/requirements.txt
     fi
 
     if [ -f "requirements-dev.txt" ]; then

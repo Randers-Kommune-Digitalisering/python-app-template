@@ -27,4 +27,4 @@ EXPOSE 8080
 USER $APP_USER
 
 ENTRYPOINT ["python"]
-CMD ["app.py"]
+CMD ["main.py"]
