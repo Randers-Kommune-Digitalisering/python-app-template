@@ -7,6 +7,8 @@ on:
   workflow_run:
     workflows: [Unit tests]
     branches: [develop, main]
+    tags:
+      - 'v*.*.*'
     types: 
       - completed
 
