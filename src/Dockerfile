@@ -7,8 +7,6 @@ ENV GROUP_ID=11000
 ENV USER_ID=11001
 ENV PORT=8080
 
-RUN echo "Testing, testing - I am develop"
-
 # Add user
 RUN addgroup --gid $GROUP_ID $GROUP_NAME && \
     adduser $USER_ID -u $USER_ID -D -G $GROUP_NAME -h $HOME
