@@ -20,18 +20,20 @@ jobs:
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
+    steps:   
+      # Set docker image names.
+      - name: Setup env variables
+        run: |
+          echo "DOCKER_SERVICE=ghcr.io/$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
         # Set to same branch as workflow
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
 
-    
-      # Set docker image names.
-      - name: Setup env variables
-        run: |
-          echo "DOCKER_SERVICE=ghcr.io/$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+      - name: Testing context
+        run: echo "$GITHUB_CONTEXT"
 
 # Login against a Docker registry except on PR
 # https://github.com/docker/login-action
