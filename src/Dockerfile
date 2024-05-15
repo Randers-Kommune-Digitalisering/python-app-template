@@ -1,23 +1,25 @@
 FROM python:3.10-alpine
 
 # Set dir and user
-ENV APP_HOME=/app
-ENV APP_USER=non-root
+ENV GROUP_NAME=app
+ENV HOME=/app
+ENV GROUP_ID=11000
+ENV USER_ID=11001
 ENV PORT=8080
 
 RUN echo $PORT
 
 # Add user
-RUN addgroup $APP_USER && \
-    adduser $APP_USER -D -G $APP_USER -h $APP_HOME
+RUN addgroup --gid $GROUP_ID $GROUP_NAME && \
+    adduser $USER_ID -u $USER_ID -D -G $GROUP_NAME -h $HOME
 
 # Install packages
 # RUN apk update
 # RUN apk add postgresql-dev gcc python3-dev musl-dev # Packages needed for psycopg2
 
 # Copy files and set working dir
-COPY . $APP_HOME
-WORKDIR $APP_HOME
+COPY . $HOME
+WORKDIR $HOME
 
 # Install python packages
 RUN pip install --upgrade pip
@@ -27,7 +29,7 @@ RUN pip install -r requirements.txt
 EXPOSE $PORT
 
 # Set user
-USER $APP_USER
+USER $USER_ID
 
 ENTRYPOINT ["python"]
 CMD ["main.py"]
