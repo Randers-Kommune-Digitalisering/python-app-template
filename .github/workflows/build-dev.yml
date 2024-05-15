@@ -28,6 +28,8 @@ jobs:
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
+        with:
+            ref: ${{ github.event.workflow_run.head_branch }}
 
 # Login against a Docker registry except on PR
 # https://github.com/docker/login-action
@@ -44,7 +46,7 @@ jobs:
 
 # Push to Github
       - name: Tag service git id docker image
-        run: ./scripts/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:${{ github.sha }}
+        run: ./scripts/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:${{ github.event.workflow_run.head_sha }}
 
       - name: Tag service dev docker image
         run: ./scripts/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:dev
@@ -53,7 +55,7 @@ jobs:
         run: ./scripts/docker-push.sh ${{ env.DOCKER_SERVICE }}:dev
 
       - name: Push service git id docker image.
-        run: ./scripts/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ github.sha }}
+        run: ./scripts/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ github.event.workflow_run.head_sha }}
 
       - name: Push latest service docker image
         if: ${{ steps.tag.conclusion != 'skipped' }}
