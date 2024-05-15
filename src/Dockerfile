@@ -7,7 +7,7 @@ ENV GROUP_ID=11000
 ENV USER_ID=11001
 ENV PORT=8080
 
-RUN echo $PORT
+RUN echo "I am develop"
 
 # Add user
 RUN addgroup --gid $GROUP_ID $GROUP_NAME && \
