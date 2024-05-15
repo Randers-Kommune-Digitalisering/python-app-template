@@ -43,8 +43,8 @@ jobs:
 # if below step is skipped this build is a tag build. Can be used for skipping other steps.
       - name: Is Tag Build
         id: tag
-        if:  ${{ startsWith(github.event.workflow_run.head_branch, 'refs/tags/v') }}
-        run: echo ::set-output name=VERSION::${github.event.workflow_run.head_branch/refs\/tags\/v/}     
+        if:  ${{ startsWith(github.ref, 'refs/tags/v') }}
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}  
 
 # Build
       - name: Build
@@ -52,16 +52,26 @@ jobs:
 
 # Push to Github
       - name: Tag service git id docker image
+        if: ${{ steps.tag.conclusion == 'skipped' }}
         run: ./scripts/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:${{ github.event.workflow_run.head_sha }}
+
+      - name: Tag service git id docker image
+        if: ${{ steps.tag.conclusion != 'skipped' }}
+        run: ./scripts/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:${{ github.sha }}
 
       - name: Tag service dev docker image
         run: ./scripts/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:dev
 
-      - name: Push dev docker image.
-        run: ./scripts/docker-push.sh ${{ env.DOCKER_SERVICE }}:dev
+      - name: Push service git id docker image.
+        if: ${{ steps.tag.conclusion == 'skipped' }}
+        run: ./scripts/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ github.event.workflow_run.head_sha }}
 
       - name: Push service git id docker image.
-        run: ./scripts/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ github.event.workflow_run.head_sha }}
+        if: ${{ steps.tag.conclusion != 'skipped' }}
+        run: ./scripts/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ github.sha }}
+
+      - name: Push dev docker image.
+        run: ./scripts/docker-push.sh ${{ env.DOCKER_SERVICE }}:dev
 
       - name: Push latest service docker image
         if: ${{ steps.tag.conclusion != 'skipped' }}
