@@ -1,8 +1,10 @@
 # Python app template projekt
 Template til nye Python app projekter.
 Projekt indeholder en bare bone Flask app
-* healthz endpoint
-* unit test af healthz endpoint
+* Health endpoint
+* Prometheus metrics endpoint
+* Test job endpoint
+* Unit test af de 3 endpoints
 
 # Brug af python-app-template
 1. Klik på "use this template" og vælg "create a new repository"
