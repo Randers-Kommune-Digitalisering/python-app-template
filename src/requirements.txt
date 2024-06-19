@@ -1,5 +1,6 @@
 Flask==3.0.3
 mariadb
+pymssql
 py-healthcheck
 psycopg2
 prometheus-client
