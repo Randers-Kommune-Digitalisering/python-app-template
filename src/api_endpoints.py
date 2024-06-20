@@ -34,7 +34,7 @@ def example():
             job_duration_summary.labels(job_name='example job', status='success').observe(duration.total_seconds())
             job_complete_counter.labels(job_name='example job', status='success').inc()
 
-            is_ready_gauge.labels(error_type= None, job_name=POD_NAME).set(1)
+            is_ready_gauge.labels(error_type=None, job_name=POD_NAME).set(1)
             last_updated_gauge.set_to_current_time()
             # --------------------------------------------- #
 

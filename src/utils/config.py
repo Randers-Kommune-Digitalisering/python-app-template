@@ -8,7 +8,7 @@ load_dotenv()
 
 DEBUG = os.getenv('DEBUG', 'False') in ['True', 'true']
 PORT = os.getenv('PORT', '8080')
-POD_NAME = os.getenv('POD_NAME', 'Pod name not set')
+POD_NAME = os.getenv('POD_NAME', 'pod_name_not_set')
 
 # DB_USER = os.environ["DB_USER"].strip()
 # DB_PASS = os.environ["DB_PASS"].strip()
