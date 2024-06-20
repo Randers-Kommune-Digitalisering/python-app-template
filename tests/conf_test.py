@@ -17,11 +17,6 @@ def client(app):
     return app.test_client()
 
 
-@pytest.fixture()
-def runner(app):
-    return app.test_cli_runner()
-
-
 def test_healthz(client):
     response = client.get('/healthz')
     assert response.status_code == 200
@@ -29,7 +24,7 @@ def test_healthz(client):
 
 
 def test_metrics(client):
-    # POD_NAME env var set in pytest.ini
+    # POD_NAME env var set in pytest.ini (test-pod)
     response = client.get('/metrics')
     assert response.status_code == 200
-    assert 'up gauge\nup{name="test-pod"} 1.0' in response.text
+    assert 'is_ready gauge\nis_ready{error_type="None",job_name="test-pod"} 1.0' in response.text

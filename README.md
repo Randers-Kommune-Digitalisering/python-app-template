@@ -104,6 +104,10 @@ my_api_client.make_request(method='POST', path='some/path', data=my_json)
 my_api_client.make_request(method='PUT', path='some/path', json=my_dict)
 my_api_client.make_request(method='delete', path='some/path', json=my_dict)
 ```
+
+### Endpoints
+* Eksempel findes i [api_endpoints.py](src/api_endpoints.py), husk at aktivere i main.py
+
 ### Skriv til filer
 * Hvis der skal skrives til filer skal det være på et eksternt mount
 * Eksempel til at test lokalt [docker-compose.yml](/docker-compose.yml#L18)
