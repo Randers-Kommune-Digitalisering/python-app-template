@@ -35,7 +35,7 @@ def test_set_logging_configuration(mock_disable_endpoint_logs, mock_basicConfig)
 
     mock_basicConfig.assert_called_once_with(
         stream=sys.stdout,
-        level=logging.DEBUG,
+        level=logging.INFO,
         format='[%(asctime)s] %(levelname)s - %(name)s - %(module)s:%(funcName)s - %(message)s',
         datefmt='%d-%m-%Y %H:%M:%S'
     )
