@@ -105,6 +105,37 @@ my_api_client.make_request(method='PUT', path='some/path', json=my_dict)
 my_api_client.make_request(method='delete', path='some/path', json=my_dict)
 ```
 
+### SFTP - forbind til ftp server
+SFTPClient kan håntere flere typer authentication, eksempel på brug herunder:
+* Username og password
+```
+from utils.config import HOST, USERNAME, PASSWORD
+from utils.sftp import SFTPClient
+
+client = SFTPClient(HOST, USERNAME, PASSWORD)
+```
+* SSH nøgle
+```
+from utils.config import HOST, USERNAME, BASE64_SSH_KEY
+from utils.sftp import SFTPClient
+
+client = SFTPClient(HOST, USERNAME, key_base64=BASE64_SSH_KEY)
+```
+* kodeordsbeskyttet SSH nøgle
+```
+from utils.config import HOST, USERNAME, BASE64_SSH_KEY, SSH_KEY_PASS
+from utils.sftp import SFTPClient
+
+client = SFTPClient(HOST, USERNAME, key_base64=BASE64_SSH_KEY,  key_pass=SSH_KEY_PASS)
+```
+* Forbind og brug som [pysftp](https://pysftp.readthedocs.io/)
+```
+with client.get_connection() as conn:
+    print(conn.listdir())
+    my_file = conn.open('somepath/some_remote_file.txt')
+
+```
+
 ### Endpoints
 * Eksempel findes i [api_endpoints.py](src/api_endpoints.py), husk at aktivere i main.py
 
@@ -114,5 +145,3 @@ my_api_client.make_request(method='delete', path='some/path', json=my_dict)
 
 ### Scheduler - kør kode på bestemt tidspunkt eller med interval
 * Lav endpoint der starter jobbet og Kald endpoint med cronjob i kubenetes
-
-* frontend - new template
