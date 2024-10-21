@@ -27,7 +27,7 @@ jobs:
           sudo apt-get install -y libmariadb-dev
           python -m pip install --upgrade pip
           pip install -r src/requirements.txt
-          pip install flake8 pytest pytest-env pytest-cov
+          pip install -r requirements-dev.txt
       - name: Build coverage file
         run: |
           pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=src tests/ | tee pytest-coverage.txt
