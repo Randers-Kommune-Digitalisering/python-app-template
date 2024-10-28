@@ -45,6 +45,15 @@ jobs:
             echo "branch=unknown" >> $GITHUB_OUTPUT
           fi
 
+      - name: Check if secret exists
+        id: check_secret
+        run: |
+          if [ -z "${{ secrets.ACCESS_ARGO_APPS }}" ]; then
+            echo "::set-output name=secret_exists::false"
+          else
+            echo "::set-output name=secret_exists::true"
+          fi
+
 # Build
       - name: Build
         run: ./scripts/build.sh ${{ env.DOCKER_SERVICE }} ${{ github.event.repository.url }}
@@ -88,7 +97,7 @@ jobs:
       - name: Checkout Target Repository
         id: checkout
         uses: actions/checkout@v2
-        if: ${{ steps.branch.conclusion != 'skipped' && steps.branch.outputs.branch != 'unknown' && secrets.ACCESS_ARGO_APPS != '' }}
+        if: ${{ steps.branch.conclusion != 'skipped' && steps.branch.outputs.branch != 'unknown' && steps.check_secret.outputs.secret_exists == 'true' }}
         with:
           repository: Randers-Kommune-Digitalisering/kithosting-randers-kommune-apps
           ref: ${{ steps.branch.outputs.branch }}
