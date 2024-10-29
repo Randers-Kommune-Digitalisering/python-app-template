@@ -8,6 +8,8 @@ on:
       - 'v*.*.*'
     types: 
       - completed
+    conclusions:
+      - success
 
 jobs:
   build:
