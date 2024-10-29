@@ -4,6 +4,8 @@ on:
   workflow_run:
     workflows: [Test]
     branches: [develop, main]
+    tags:
+      - 'v*.*.*'
     types: 
       - completed
 
@@ -40,7 +42,7 @@ jobs:
           if [[ "$branch_name" == "develop" ]]; then
             echo "branch=test" >> $GITHUB_OUTPUT
           elif [[ "$branch_name" == "main" ]]; then
-            echo "branch=prod" >> $GITHUB_OUTPUT
+            echo "branch=test" >> $GITHUB_OUTPUT
           else
             echo "branch=unknown" >> $GITHUB_OUTPUT
           fi
@@ -97,10 +99,11 @@ jobs:
       - name: Checkout Target Repository
         id: checkout
         uses: actions/checkout@v2
-        if: ${{ steps.branch.conclusion != 'skipped' && steps.branch.outputs.branch != 'unknown' && steps.check_secret.outputs.secret_exists == 'true' }}
+        if: ${{ (steps.tag.conclusion != 'skipped' || steps.branch.outputs.branch != 'unknown') && steps.check_secret.outputs.secret_exists == 'true' }}
         with:
           repository: Randers-Kommune-Digitalisering/kithosting-randers-kommune-apps
           ref: ${{ steps.branch.outputs.branch }}
+          ref: ${{ steps.tag.conclusion != 'skipped' && 'prod' || 'test' }} 
           path: infrastructure
           ssh-key: ${{ secrets.ACCESS_ARGO_APPS }}
           
@@ -109,12 +112,12 @@ jobs:
         run: |
           sudo apt install -y jq
 
-      - name: Update version
+      - name: Update with sha
         if: ${{ steps.checkout.conclusion == 'success' && steps.tag.conclusion == 'skipped' && steps.branch.outputs.branch == 'test'}}
         run: |
           yq e ".service.image.tag = \"${{ github.sha }}\"" -i infrastructure/python-app-template/values.yaml
 
-      - name: Update version
+      - name: Update with tag
         if: ${{ steps.checkout.conclusion == 'success' && steps.tag.conclusion != 'skipped' }}
         run: |
           yq e ".service.image.tag = \"${{ steps.tag.outputs.VERSION }}\"" -i infrastructure/python-app-template/values.yaml
