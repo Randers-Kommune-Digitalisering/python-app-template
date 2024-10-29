@@ -52,7 +52,7 @@ jobs:
       - name: Check if secret exists
         id: check_secret
         run: |
-          if [ -z "${{ secrets.ACCESS_ARGO_APPS }}" ]; then
+          if [ -z "${{ secrets.AUTO_DEPLOY }}" ]; then
             echo "secret_exists=false" >> $GITHUB_OUTPUT
           else
             echo "secret_exists=true" >> $GITHUB_OUTPUT
@@ -106,7 +106,7 @@ jobs:
           repository: Randers-Kommune-Digitalisering/kithosting-randers-kommune-apps
           ref: ${{ steps.tag.conclusion != 'skipped' && 'prod' || 'test' }} 
           path: infrastructure
-          ssh-key: ${{ secrets.ACCESS_ARGO_APPS }}
+          ssh-key: ${{ secrets.AUTO_DEPLOY }}
           
       - name: Install yq
         if: ${{ steps.checkout.conclusion == 'success' }}
