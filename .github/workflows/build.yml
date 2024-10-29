@@ -8,13 +8,25 @@ on:
       - 'v*.*.*'
     types: 
       - completed
-    conclusions:
-      - success
 
 jobs:
+  on-success:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - run: echo "Test was a success - running build"
+
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion != 'success' }}
+    steps:
+      - run: echo "Test did not succeed"
+      - name: Cancel Workflow
+        run: exit 1
+
   build:
     runs-on: ubuntu-latest
-
+    needs: on-success
     steps:   
       - name: Setup env variables
         run: |
