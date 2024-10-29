@@ -1,74 +1,36 @@
-name: CI/CD
+# This is a basic workflow to help you get started with Actions
 
+name: Build
+
+# Controls when the workflow will run
 on:
-  workflow_run:
-    workflows: [Test]
-    branches: [develop, main]
-    tags:
-      - 'v*.*.*'
-    types: 
-      - completed
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  on-success:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    steps:
-      - run: echo "Test was a success - running build"
-
-  on-failure:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion != 'success' }}
-    steps:
-      - run: echo "Test did not succeed"
-      - name: Cancel Workflow
-        run: exit 1
-
   build:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    needs: on-success
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:   
+      # Set docker image names.
       - name: Setup env variables
         run: |
           echo "DOCKER_SERVICE=ghcr.io/$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
-        with:
-            ref: ${{ github.event.workflow_run.head_branch }}
 
+# Login against a Docker registry except on PR
+# https://github.com/docker/login-action
       - name: Log into registry ghcr.io
         uses: docker/login-action@v3
         with:
           registry: ghcr.io/${{ github.repository_owner }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Is Tag Build
-        id: tag
-        if:  ${{ startsWith(github.ref, 'refs/tags/v') }}
-        run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
-
-      - name: Set Branch Name
-        id: branch
-        if: ${{ contains('main,develop', github.ref_name) }}
-        run: |
-          branch_name=${GITHUB_REF##*/}
-          if [[ "$branch_name" == "develop" ]]; then
-            echo "branch=test" >> $GITHUB_OUTPUT
-          elif [[ "$branch_name" == "main" ]]; then
-            echo "branch=test" >> $GITHUB_OUTPUT
-          else
-            echo "branch=unknown" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Check if secret exists
-        id: check_secret
-        run: |
-          if [ -z "${{ secrets.AUTO_DEPLOY }}" ]; then
-            echo "secret_exists=false" >> $GITHUB_OUTPUT
-          else
-            echo "secret_exists=true" >> $GITHUB_OUTPUT
-          fi
+          password: ${{ secrets.GITHUB_TOKEN }}     
 
 # Build
       - name: Build
@@ -76,72 +38,13 @@ jobs:
 
 # Push to Github
       - name: Tag service git id docker image
-        if: ${{ steps.tag.conclusion == 'skipped' }}
-        run: ./scripts/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:${{ github.event.workflow_run.head_sha }}
-
-      - name: Tag service git id docker image
-        if: ${{ steps.tag.conclusion != 'skipped' }}
         run: ./scripts/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:${{ github.sha }}
 
       - name: Tag service dev docker image
         run: ./scripts/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:dev
 
-      - name: Push service git id docker image.
-        if: ${{ steps.tag.conclusion == 'skipped' }}
-        run: ./scripts/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ github.event.workflow_run.head_sha }}
-
-      - name: Push service git id docker image.
-        if: ${{ steps.tag.conclusion != 'skipped' }}
-        run: ./scripts/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ github.sha }}
-
       - name: Push dev docker image.
         run: ./scripts/docker-push.sh ${{ env.DOCKER_SERVICE }}:dev
 
-      - name: Push latest service docker image
-        if: ${{ steps.tag.conclusion != 'skipped' }}
-        run: ./scripts/docker-push.sh ${{ env.DOCKER_SERVICE }}:latest
-
-      - name: Tag version service docker image
-        if: ${{ steps.tag.conclusion != 'skipped' }}
-        run: ./scripts/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:${{ steps.tag.outputs.VERSION }}
-
-      - name: Push version service docker image.
-        if: ${{ steps.tag.conclusion != 'skipped' }}
-        run: ./scripts/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ steps.tag.outputs.VERSION }}
-
-  # Update verion i config       
-      - name: Checkout Target Repository
-        id: checkout
-        uses: actions/checkout@v4
-        if: ${{ (steps.tag.conclusion != 'skipped' || steps.branch.outputs.branch != 'unknown') && steps.check_secret.outputs.secret_exists == 'true' }}
-        with:
-          repository: Randers-Kommune-Digitalisering/kithosting-randers-kommune-apps
-          ref: ${{ steps.tag.conclusion != 'skipped' && 'prod' || 'test' }} 
-          path: infrastructure
-          ssh-key: ${{ secrets.AUTO_DEPLOY }}
-          
-      - name: Install yq
-        if: ${{ steps.checkout.conclusion == 'success' }}
-        run: |
-          sudo apt install -y jq
-
-      - name: Update with sha
-        if: ${{ steps.checkout.conclusion == 'success' && steps.tag.conclusion == 'skipped' && steps.branch.outputs.branch == 'test'}}
-        run: |
-          yq e ".service.image.tag = \"${{ github.sha }}\"" -i infrastructure/python-app-template/values.yaml
-
-      - name: Update with tag
-        if: ${{ steps.checkout.conclusion == 'success' && steps.tag.conclusion != 'skipped' }}
-        run: |
-          yq e ".service.image.tag = \"${{ steps.tag.outputs.VERSION }}\"" -i infrastructure/python-app-template/values.yaml
-
-      - name: Commit and push
-        if: ${{ steps.checkout.conclusion == 'success' }}
-        run: |
-          git config --global user.name 'GitHub Action'
-          git config --global user.email 'action@github.com'
-          cd infrastructure
-          if [[ -n "$(git status -s)" ]]; then
-            git commit -am "Update version"
-            git push
-          fi
+      - name: Push service git id docker image.
+        run: ./scripts/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ github.sha }}
