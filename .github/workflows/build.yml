@@ -102,7 +102,6 @@ jobs:
         if: ${{ (steps.tag.conclusion != 'skipped' || steps.branch.outputs.branch != 'unknown') && steps.check_secret.outputs.secret_exists == 'true' }}
         with:
           repository: Randers-Kommune-Digitalisering/kithosting-randers-kommune-apps
-          ref: ${{ steps.branch.outputs.branch }}
           ref: ${{ steps.tag.conclusion != 'skipped' && 'prod' || 'test' }} 
           path: infrastructure
           ssh-key: ${{ secrets.ACCESS_ARGO_APPS }}
