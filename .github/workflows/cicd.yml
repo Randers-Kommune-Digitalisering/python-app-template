@@ -65,22 +65,12 @@ jobs:
         run: ./scripts/build.sh ${{ env.DOCKER_SERVICE }} ${{ github.event.repository.url }}
 
       - name: Tag service git id docker image
-        if: ${{ steps.tag.conclusion == 'skipped' }}
-        run: ./scripts/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:${{ github.event.workflow_run.head_sha }}
-
-      - name: Tag service git id docker image
-        if: ${{ steps.tag.conclusion != 'skipped' }}
         run: ./scripts/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:${{ github.sha }}
 
       - name: Tag service dev docker image
         run: ./scripts/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:dev
 
       - name: Push service git id docker image.
-        if: ${{ steps.tag.conclusion == 'skipped' }}
-        run: ./scripts/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ github.event.workflow_run.head_sha }}
-
-      - name: Push service git id docker image.
-        if: ${{ steps.tag.conclusion != 'skipped' }}
         run: ./scripts/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ github.sha }}
 
       - name: Push dev docker image.
