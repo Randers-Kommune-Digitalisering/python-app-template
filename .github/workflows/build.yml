@@ -32,7 +32,7 @@ jobs:
       - name: Is Tag Build
         id: tag
         if:  ${{ startsWith(github.ref, 'refs/tags/v') }}
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
+        run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
 
       - name: Set Branch Name
         id: branch
@@ -51,9 +51,9 @@ jobs:
         id: check_secret
         run: |
           if [ -z "${{ secrets.ACCESS_ARGO_APPS }}" ]; then
-            echo "::set-output name=secret_exists::false"
+            echo "secret_exists=false" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=secret_exists::true"
+            echo "secret_exists=true" >> $GITHUB_OUTPUT
           fi
 
 # Build
@@ -98,7 +98,7 @@ jobs:
   # Update verion i config       
       - name: Checkout Target Repository
         id: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         if: ${{ (steps.tag.conclusion != 'skipped' || steps.branch.outputs.branch != 'unknown') && steps.check_secret.outputs.secret_exists == 'true' }}
         with:
           repository: Randers-Kommune-Digitalisering/kithosting-randers-kommune-apps
