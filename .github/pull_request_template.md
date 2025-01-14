@@ -18,10 +18,10 @@
 
 ### Review
 - [ ] :mailbox: Sæt PR til review
-- [ ] :eyes: Review pull request
+- [ ] :eyes: Review PR
 
 ### Deployment
 - [ ] :shield: Scan repo med Snyk
-- [ ] :closed_lock_with_key: Konfigurer sealed secrets
+- [ ] :closed_lock_with_key: Konfigurer Sealed Secrets
 - [ ] :key: Konfigurer KeyCloak
 - [ ] :pencil2: Opdater tag
