@@ -13,7 +13,7 @@ RUN addgroup --gid $GROUP_ID $GROUP_NAME && \
 
 # Install packages
 RUN apk update
-RUN apk add musl-dev gcc libpq-dev mariadb-connector-c-dev postgresql-dev python3-dev
+RUN apk add musl-dev gcc libpq-dev mariadb-connector-c-dev postgresql-dev python3-dev py3-wheel
 
 # Copy files and set working dir
 COPY . $HOME
@@ -27,7 +27,7 @@ USER $USER_ID
 
 # Install python packages
 RUN python -m pip install --upgrade pip
-RUN python -m pip install wheel
+RUN python -m pip install setuptools
 RUN python -m pip install -r requirements.txt
 
 ENTRYPOINT ["python"]
