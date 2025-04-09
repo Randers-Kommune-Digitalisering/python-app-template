@@ -20,7 +20,7 @@ COPY . $HOME
 WORKDIR $HOME
 
 # Install python packages
-RUN pip install --upgrade pip
+# RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # Open port
