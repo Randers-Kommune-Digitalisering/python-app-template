@@ -19,15 +19,15 @@ RUN apk add musl-dev gcc libpq-dev mariadb-connector-c-dev postgresql-dev python
 COPY . $HOME
 WORKDIR $HOME
 
+# Set user
+USER $USER_ID
+
 # Install python packages
-# RUN pip install --upgrade pip
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # Open port
 EXPOSE $PORT
-
-# Set user
-USER $USER_ID
 
 ENTRYPOINT ["python"]
 CMD ["main.py"]
