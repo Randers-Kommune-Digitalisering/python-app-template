@@ -13,22 +13,21 @@ RUN addgroup --gid $GROUP_ID $GROUP_NAME && \
 
 # Install packages
 RUN apk update
-RUN apk add musl-dev gcc libpq-dev mariadb-connector-c-dev postgresql-dev python3-dev py3-wheel
+RUN apk add --no-cache gcc musl-dev python3-dev libffi-dev openssl-dev libpq-dev mariadb-connector-c-dev postgresql-dev
 
 # Copy files and set working dir
 COPY . $HOME
 WORKDIR $HOME
+
+# Install python packages
+RUN pip install --upgrade pip setuptools wheel
+RUN pip install -r requirements.txt
 
 # Open port
 EXPOSE $PORT
 
 # Set user
 USER $USER_ID
-
-# Install python packages
-RUN python -m pip install --upgrade pip
-RUN python -m pip install setuptools
-RUN python -m pip install -r requirements.txt
 
 ENTRYPOINT ["python"]
 CMD ["main.py"]
