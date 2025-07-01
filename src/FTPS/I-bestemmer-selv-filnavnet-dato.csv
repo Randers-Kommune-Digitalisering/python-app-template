@@ -1,0 +1,6 @@
+Navn;Personalenr.;Mobiltelefonnr. ;Email;MasterGroup;UserGroup;Titel;Fødselsdag;Ansættelsesdato
+Her skriver I medarbejderens fulde navn ;F.eks det der står  på lønseddel;Her angiver I medarbejderens mobilnummer;Her angiver I medarbejderens arbejdsemailadresse;Hovedgruppe. Her angiver I medarbejderens primære gruppe, det kan være Geografisk eller organisatorisk;Undergruppe. Her angiver I, hvilken undergruppe MasterGroup, typisk hvilken afdeling medarbejderen er tilnyttet (Gerne afdelings nr. hvis muligt);Her angiver I, hvilken titel medarbejderen har;Her angiver i brugerens fødselsdag;Her angiver i brugerens ansættelsesdato
+Fx Hans Hansen;Fx 7424;Fx 22334455;Fx hans.hansen@mitfirma.dk;Timelønnede;Beton;Maskinfører;F.eks. 31-03-1995;F.eks. 31-03-2015
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
