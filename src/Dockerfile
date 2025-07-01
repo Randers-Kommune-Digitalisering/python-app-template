@@ -1,4 +1,4 @@
 FROM ubuntu:latest
-RUN apt-get update && apt-get install -y --no-install-recommends openssl netcat-openbsd lftp python3 python3-pip && pip3 install pycurl
+RUN apt-get update && apt-get install -y --no-install-recommends openssl netcat-openbsd lftp python3 python3-pip && pip3 install pycurl --break-system-packages
 COPY FTPS /FTPS
 CMD ["sleep", "infinity"]
