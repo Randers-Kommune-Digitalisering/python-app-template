@@ -27,15 +27,14 @@ c.perform()
 c.close()
 
 listing = buffer.getvalue().decode('utf-8')
-print("Listing before upload:\n", listing)
+print("Listing before deletion:\n", listing)
 
 # Delete file named 'I-bestemmer-selv-filnavnet-dato.csv' from the server
-upload_filename = 'I-bestemmer-selv-filnavnet-dato.csv'
-
+filename = 'I-bestemmer-selv-filnavnet-dato.csv'
 
 delete_curl = pycurl.Curl()
-delete_curl.setopt(upload_curl.URL, f"{HOST}/{upload_filename}")
-delete_curl.setopt(upload_curl.USERPWD, f'{USERNAME}:{PASSWORD}')
+delete_curl.setopt(delete_curl.URL, f"{HOST}/{filename}")
+delete_curl.setopt(delete_curl.USERPWD, f'{USERNAME}:{PASSWORD}')
 delete_curl.setopt(delete_curl.SSL_VERIFYPEER, 0)
 delete_curl.setopt(delete_curl.SSL_VERIFYHOST, 0)
 delete_curl.setopt(delete_curl.FTP_SSL, pycurl.FTPSSL_ALL)
@@ -45,9 +44,9 @@ delete_curl.setopt(delete_curl.QUOTE, [f"DELE {filename}"])
 delete_curl.perform()
 delete_curl.close()
 
-print(f"Uploaded {upload_filename} to {HOST}")
+print(f"Deleted {filename} from {HOST}")
 
-# List files again to confirm upload
+# List files again to confirm deletion
 buffer_after = io.BytesIO()
 c = pycurl.Curl()
 c.setopt(c.URL, HOST)
@@ -63,5 +62,4 @@ c.perform()
 c.close()
 
 listing_after = buffer_after.getvalue().decode('utf-8')
-print("Listing after upload:\n", listing_after)
-
+print("Listing after deletion:\n", listing_after)
