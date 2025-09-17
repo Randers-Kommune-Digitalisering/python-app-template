@@ -29,22 +29,21 @@ c.close()
 listing = buffer.getvalue().decode('utf-8')
 print("Listing before upload:\n", listing)
 
-# Upload a file named 'I-bestemmer-selv-filnavnet-dato.csv' to the server
+# Delete file named 'I-bestemmer-selv-filnavnet-dato.csv' from the server
 upload_filename = 'I-bestemmer-selv-filnavnet-dato.csv'
 
-with open(upload_filename, 'rb') as f:
-    upload_curl = pycurl.Curl()
-    upload_curl.setopt(upload_curl.URL, f"{HOST}/{upload_filename}")
-    upload_curl.setopt(upload_curl.USERPWD, f'{USERNAME}:{PASSWORD}')
-    upload_curl.setopt(upload_curl.SSL_VERIFYPEER, 0)
-    upload_curl.setopt(upload_curl.SSL_VERIFYHOST, 0)
-    upload_curl.setopt(upload_curl.UPLOAD, 1)
-    upload_curl.setopt(upload_curl.READDATA, f)
-    upload_curl.setopt(upload_curl.FTP_SSL, pycurl.FTPSSL_ALL)
-    upload_curl.setopt(upload_curl.FTPSSLAUTH, pycurl.FTPAUTH_TLS)
-    upload_curl.setopt(upload_curl.FTP_USE_EPSV, 1)
-    upload_curl.perform()
-    upload_curl.close()
+
+delete_curl = pycurl.Curl()
+delete_curl.setopt(upload_curl.URL, f"{HOST}/{upload_filename}")
+delete_curl.setopt(upload_curl.USERPWD, f'{USERNAME}:{PASSWORD}')
+delete_curl.setopt(delete_curl.SSL_VERIFYPEER, 0)
+delete_curl.setopt(delete_curl.SSL_VERIFYHOST, 0)
+delete_curl.setopt(delete_curl.FTP_SSL, pycurl.FTPSSL_ALL)
+delete_curl.setopt(delete_curl.FTPSSLAUTH, pycurl.FTPAUTH_TLS)
+delete_curl.setopt(delete_curl.FTP_USE_EPSV, 1)
+delete_curl.setopt(delete_curl.QUOTE, [f"DELE {filename}"])
+delete_curl.perform()
+delete_curl.close()
 
 print(f"Uploaded {upload_filename} to {HOST}")
 
@@ -65,3 +64,4 @@ c.close()
 
 listing_after = buffer_after.getvalue().decode('utf-8')
 print("Listing after upload:\n", listing_after)
+
