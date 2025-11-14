@@ -30,4 +30,17 @@ app = create_app()
 
 
 if __name__ == '__main__':  # pragma: no cover
+    from sqlalchemy import create_engine, inspect
+    from utils.config import DB_CONNECTION_STRING
+
+    print(f"DB Connection String: {DB_CONNECTION_STRING}")
+
+    engine = create_engine(DB_CONNECTION_STRING)
+    inspector = inspect(engine)
+    tables = inspector.get_table_names()
+
+    print("Tables in the database:")
+    for table in tables:
+        print(table)
+
     app.run(debug=DEBUG, host='0.0.0.0', port=PORT)
