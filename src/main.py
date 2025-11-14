@@ -1,3 +1,4 @@
+import logging
 from flask import Flask
 from healthcheck import HealthCheck
 from prometheus_client import generate_latest
@@ -8,6 +9,7 @@ from utils.config import DEBUG, PORT, POD_NAME
 
 
 set_logging_configuration()
+logger = logging.getLogger(__name__)
 
 
 def create_app():
@@ -30,10 +32,11 @@ app = create_app()
 
 
 if __name__ == '__main__':  # pragma: no cover
+    logger.info("Starting Flask application")
     from sqlalchemy import create_engine, inspect
     from utils.config import DB_CONNECTION_STRING
 
-    print(f"DB Connection String: {DB_CONNECTION_STRING}")
+    logger.info(f"DB Connection String: {DB_CONNECTION_STRING}")
 
     engine = create_engine(DB_CONNECTION_STRING)
     inspector = inspect(engine)
