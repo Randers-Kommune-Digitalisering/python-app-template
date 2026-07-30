@@ -45,7 +45,7 @@ def test_playwright_browserless():
         context = None
         try:
             logger.info("Playwright step: connecting to remote browser")
-            browser = p.chromium.connect(BROWSERLESS_URL)
+            browser = p.chromium.connect_over_cdp(BROWSERLESS_URL)
             logger.info("Playwright step: remote browser connection established")
             logger.info("Playwright step: creating browser context")
             context = browser.new_context()
